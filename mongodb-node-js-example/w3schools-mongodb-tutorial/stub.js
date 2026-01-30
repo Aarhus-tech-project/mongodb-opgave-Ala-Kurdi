@@ -156,7 +156,29 @@ async function main() {
         console.log("Remaining students:", remaining.map(s => `${s.name} (${s.age})`));
 
 
+        // Group remaining test students by major and count them
+        const groupedByMajor = await collection.aggregate([
+            { $match: { _testData: true } }, // only our test documents
+            {
+                $group: {
+                    _id: "$major",
+                    count: { $sum: 1 },
+                    avgAge: { $avg: "$age" }
+                }
+            },
+            { $sort: { count: -1 } }
+        ]).toArray();
 
+        console.log("Aggregation - grouped by major:", groupedByMajor);
+
+        // Another aggregation example: count by city
+        const groupedByCity = await collection.aggregate([
+            { $match: { _testData: true } },
+            { $group: { _id: "$city", count: { $sum: 1 } } },
+            { $sort: { _id: 1 } }
+        ]).toArray();
+
+        console.log("Aggregation - grouped by city:", groupedByCity);
 
     } catch (err) {
         console.error('Error: ', err);
