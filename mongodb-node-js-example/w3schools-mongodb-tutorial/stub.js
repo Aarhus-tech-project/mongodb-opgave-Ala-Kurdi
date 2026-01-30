@@ -115,6 +115,27 @@ async function main() {
             .toArray();
         console.log("Sort age desc + limit 2:", sortedLimited.map(s => `${s.name} (${s.age})`));
 
+
+        // updateOne - change city for John Doe
+        const updateOneResult = await collection.updateOne(
+            { name: "John Doe", _testData: true },
+            { $set: { city: "Copenhagen" } }
+        );
+        console.log("updateOne modified:", updateOneResult.modifiedCount);
+
+        // updateMany - increment age by 1 for all Computer Science students
+        const updateManyResult = await collection.updateMany(
+            { major: "Computer Science", _testData: true },
+            { $inc: { age: 1 } }
+        );
+        console.log("updateMany modified:", updateManyResult.modifiedCount);
+
+        // Show updated results
+        const updatedStudents = await collection.find({ _testData: true }).toArray();
+        console.log("Updated students:", updatedStudents.map(s => `${s.name} (${s.age}, ${s.city})`));
+
+
+
     } catch (err) {
         console.error('Error: ', err);
     } finally {
