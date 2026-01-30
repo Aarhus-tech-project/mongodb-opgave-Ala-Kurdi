@@ -61,6 +61,18 @@ async function main() {
         ]);
         console.log('Inserted MANY documents:', insertManyResult.insertedCount);
 
+        // Find ONE (findOne)
+        const oneStudent = await collection.findOne({ name: "John Doe", _testData: true });
+        console.log("findOne result:", oneStudent);
+
+        // Find MANY (find + toArray)
+        const allTestStudents = await collection.find({ _testData: true }).toArray();
+        console.log("find (all test students) count:", allTestStudents.length);
+
+        // Find MANY with filter (example)
+        const csStudents = await collection.find({ major: "Computer Science", _testData: true }).toArray();
+        console.log("find (Computer Science) count:", csStudents.length);
+
     } catch (err) {
         console.error('Error: ', err);
     } finally {
