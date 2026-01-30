@@ -9,3 +9,9 @@ I skal udbygge stubben, så den indeholder eksempler på alle operationer fra W3
 
 I kan finde tutorialen her: https://www.w3schools.com/mongodb/index.php
 
+
+Jeg har udbygget stub.js med eksempler på de mest centrale MongoDB operationer fra W3Schools tutorialen.
+Først oprettes testdata (insertOne/insertMany), så alle efterfølgende eksempler kan køre stabilt.
+Derefter vises læsning/opslag (findOne/find), filtrering med query operators ($gt, $lt, $regex, $and, $or) samt projection, sort og limit.
+Til sidst demonstreres opdatering (updateOne/$set, updateMany/$inc), sletning (deleteOne/deleteMany), samt analyse med aggregation pipeline ($match, $group, $sort).
+
