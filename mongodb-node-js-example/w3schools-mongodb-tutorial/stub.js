@@ -135,6 +135,28 @@ async function main() {
         console.log("Updated students:", updatedStudents.map(s => `${s.name} (${s.age}, ${s.city})`));
 
 
+        // Count documents
+        const countAll = await collection.countDocuments({ _testData: true });
+        console.log("countDocuments (all test data):", countAll);
+
+        // Distinct values (unique cities)
+        const uniqueCities = await collection.distinct("city", { _testData: true });
+        console.log("distinct cities:", uniqueCities);
+
+        // deleteOne - delete Sofie
+        const deleteOneResult = await collection.deleteOne({ name: "Sofie", _testData: true });
+        console.log("deleteOne deleted:", deleteOneResult.deletedCount);
+
+        // deleteMany - delete everyone under 23
+        const deleteManyResult = await collection.deleteMany({ age: { $lt: 23 }, _testData: true });
+        console.log("deleteMany (<23) deleted:", deleteManyResult.deletedCount);
+
+        // Show remaining
+        const remaining = await collection.find({ _testData: true }).toArray();
+        console.log("Remaining students:", remaining.map(s => `${s.name} (${s.age})`));
+
+
+
 
     } catch (err) {
         console.error('Error: ', err);
