@@ -14,12 +14,9 @@
 // Run Node.js example:
 // node stub.js
 
-// W3schools MongoDB tutorial
-// https://www.w3schools.com/mongodb/index.php
-
 const { MongoClient } = require('mongodb');
 
-const url = 'mongodb://localhost:27017/';
+const url = 'mongodb://localhost:27018/';
 const client = new MongoClient(url);
 
 const dbName = 'school';
