@@ -53,6 +53,7 @@ async function main() {
         });
         console.log('Inserted ONE document:', insertOneResult.insertedId);
 
+
         // Insert many
         const insertManyResult = await collection.insertMany([
             { name: "Anna", age: 22, major: "Business", city: "Skive", _testData: true },
@@ -72,6 +73,47 @@ async function main() {
         // Find MANY with filter (example)
         const csStudents = await collection.find({ major: "Computer Science", _testData: true }).toArray();
         console.log("find (Computer Science) count:", csStudents.length);
+
+
+
+        // gt (greater than)
+        const olderThan23 = await collection.find({ age: { $gt: 23 }, _testData: true }).toArray();
+        console.log("$gt 23 count:", olderThan23.length);
+
+        // lt (less than)
+        const youngerThan25 = await collection.find({ age: { $lt: 25 }, _testData: true }).toArray();
+        console.log("$lt 25 count:", youngerThan25.length);
+
+        // regex (name starts with A)
+        const startsWithA = await collection.find({ name: { $regex: /^A/i }, _testData: true }).toArray();
+        console.log("$regex /^A/i:", startsWithA.map(s => s.name));
+
+        // and (Aarhus AND age < 23)
+        const andExample = await collection.find({
+            $and: [{ city: "Aarhus" }, { age: { $lt: 23 } }, { _testData: true }]
+        }).toArray();
+        console.log("$and example:", andExample.map(s => s.name));
+
+        // or (city is Skive OR Aalborg)
+        const orExample = await collection.find({
+            $or: [{ city: "Skive" }, { city: "Aalborg" }],
+            _testData: true
+        }).toArray();
+        console.log("$or example:", orExample.map(s => `${s.name} (${s.city})`));
+
+        // Projection (only name + major, hide _id)
+        const projectionExample = await collection.find(
+            { _testData: true },
+            { projection: { _id: 0, name: 1, major: 1 } }
+        ).toArray();
+        console.log("Projection (name, major):", projectionExample);
+
+        // Sort by age DESC + limit 2
+        const sortedLimited = await collection.find({ _testData: true })
+            .sort({ age: -1 })
+            .limit(2)
+            .toArray();
+        console.log("Sort age desc + limit 2:", sortedLimited.map(s => `${s.name} (${s.age})`));
 
     } catch (err) {
         console.error('Error: ', err);
